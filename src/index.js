@@ -95,16 +95,17 @@ class Game extends React.Component {
         }
 
         const moves = hist.map((step, move) => {
-            let mover = (this.state.ascending ? this.state.history.length-1-move : move)
+            let mover = (this.state.ascending ? this.state.history.length - 1 - move : move)
             const desc = 'Go to move #' + mover;
             return (
                 <li key={mover}>
                     <button
                         onClick={() => this.jumpTo(mover)}
-                        style={this.state.step === move ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
+                        style={this.state.step === mover ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
                         {desc}
                     </button>
-                    <text>
+                    <text
+                        style={this.state.step === mover ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
                         {`${mover % 2 === 0 ? 'O' : 'X'} on (col, row) (${this.state.move[mover][0]}, ${this.state.move[mover][1]})`}
                     </text>
                 </li>
@@ -121,7 +122,7 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
-                    <button onClick={() => { this.setState({ascending: !this.state.ascending}) }}>
+                    <button onClick={() => { this.setState({ ascending: !this.state.ascending }) }}>
                         {this.state.ascending ? 'Ascending' : 'Descending'}
                     </button>
                     <ol>{moves}</ol>
