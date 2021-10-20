@@ -22,23 +22,28 @@ class Board extends React.Component {
     }
 
     render() {
+        const board = () => {
+            let list = [];
+            for (let i = 0; i < 3; i++) {
+                list.push(
+                    <div className="board-row">
+                        {rows(i)}
+                    </div>);
+            }
+            return list;
+        }
+
+        const rows = i => {
+            let list = [];
+            for (let j = 0; j < 3; j++) {
+                list.push(this.renderSquare(i * 3 + j));
+            }
+            return list;
+        }
+
         return (
             <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
+                {board()}
             </div>
         );
     }
@@ -70,7 +75,7 @@ class Game extends React.Component {
                 squares: currentBoard
             }]),
             step: this.state.step + 1,
-            move: move.concat([[Math.ceil((i+1)/3), (i+1)%3 ? (i+1)%3 : 3]]),
+            move: move.concat([[Math.ceil((i + 1) / 3), (i + 1) % 3 ? (i + 1) % 3 : 3]]),
             xIsNext: !this.state.xIsNext
         })
     }
@@ -98,10 +103,12 @@ class Game extends React.Component {
             return (
                 <li key={move}>
                     <button
-                        onClick={() => this.jumpTo(move)}>
+                        onClick={() => this.jumpTo(move)}
+                        style={this.state.step === move ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
                         {desc}
                     </button>
-                    <text>
+                    <text
+                        style={this.state.step === move ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
                         {`${move % 2 === 0 ? 'O' : 'X'} on (col, row) (${this.state.move[move][0]}, ${this.state.move[move][1]})`}
                     </text>
                 </li>
