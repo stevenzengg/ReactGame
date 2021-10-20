@@ -109,10 +109,10 @@ class Game extends React.Component {
                         style={this.state.step === mover ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
                         {desc}
                     </button>
-                    <text
+                    <div
                         style={this.state.step === mover ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
                         {`${mover % 2 === 0 ? 'O' : 'X'} on (col, row) (${this.state.move[mover][0]}, ${this.state.move[mover][1]})`}
-                    </text>
+                    </div>
                 </li>
             )
         });
