@@ -58,6 +58,7 @@ class Game extends React.Component {
             }],
             step: 0,
             move: [[0, 0]],
+            ascending: false,
             xIsNext: true
         };
     }
@@ -98,19 +99,20 @@ class Game extends React.Component {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
 
-        const moves = this.state.history.map((step, move) => {
-            const desc = 'Go to move #' + move;
+        const moves = hist.map((step, move) => {
+            let mover = (this.state.ascending ? this.state.history.length - 1 - move : move)
+            const desc = 'Go to move #' + mover;
             return (
-                <li key={move}>
+                <li key={mover}>
                     <button
-                        onClick={() => this.jumpTo(move)}
-                        style={this.state.step === move ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
+                        onClick={() => this.jumpTo(mover)}
+                        style={this.state.step === mover ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
                         {desc}
                     </button>
-                    <text
-                        style={this.state.step === move ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
-                        {`${move % 2 === 0 ? 'O' : 'X'} on (col, row) (${this.state.move[move][0]}, ${this.state.move[move][1]})`}
-                    </text>
+                    <div
+                        style={this.state.step === mover ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
+                        {`${mover % 2 === 0 ? 'O' : 'X'} on (col, row) (${this.state.move[mover][0]}, ${this.state.move[mover][1]})`}
+                    </div>
                 </li>
             )
         });
@@ -125,6 +127,9 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
+                    <button onClick={() => { this.setState({ ascending: !this.state.ascending }) }}>
+                        {this.state.ascending ? 'Ascending' : 'Descending'}
+                    </button>
                     <ol>{moves}</ol>
                 </div>
             </div>
