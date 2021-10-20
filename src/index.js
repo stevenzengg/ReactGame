@@ -70,7 +70,7 @@ class Game extends React.Component {
                 squares: currentBoard
             }]),
             step: this.state.step + 1,
-            move: move.concat([[Math.ceil((i+1)/3), (i+1)%3 ? (i+1)%3 : 3]]),
+            move: move.concat([[Math.ceil((i + 1) / 3), (i + 1) % 3 ? (i + 1) % 3 : 3]]),
             xIsNext: !this.state.xIsNext
         })
     }
@@ -98,10 +98,12 @@ class Game extends React.Component {
             return (
                 <li key={move}>
                     <button
-                        onClick={() => this.jumpTo(move)}>
+                        onClick={() => this.jumpTo(move)} 
+                        style={this.state.step === move ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
                         {desc}
                     </button>
-                    <text>
+                    <text
+                        style={this.state.step === move ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
                         {`${move % 2 === 0 ? 'O' : 'X'} on (col, row) (${this.state.move[move][0]}, ${this.state.move[move][1]})`}
                     </text>
                 </li>
