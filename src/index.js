@@ -100,7 +100,8 @@ class Game extends React.Component {
             return (
                 <li key={mover}>
                     <button
-                        onClick={() => this.jumpTo(mover)}>
+                        onClick={() => this.jumpTo(mover)}
+                        style={this.state.step === move ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
                         {desc}
                     </button>
                     <text>
