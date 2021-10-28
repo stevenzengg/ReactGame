@@ -5,7 +5,7 @@ import './index.css';
 function Square(props) {
     return (
         <button
-            className = {props.winner ? "square" : "square-winner"}
+            className = {props.winner ? "square-winner" : "square"}
             onClick={props.onClick}>
             {props.value}
         </button>
@@ -60,27 +60,34 @@ class Game extends React.Component {
             move: [[0, 0]],
             ascending: false,
             xIsNext: true,
-            winners: []
+            winners: [],
+            draw: false
         };
     }
 
     handleClick(i) {
         const hist = this.state.history.slice(0, this.state.step + 1);
         const currentBoard = hist[this.state.step].squares.slice();
-        let winner = calculateWinner(currentBoard);
-        if ((winner && winner[1]) || currentBoard[i]) {
-            this.setState({winners: winner});
+
+        if (currentBoard[i]) {
             return;
         }
+
         currentBoard[i] = this.state.xIsNext ? 'X' : 'O';
-        const move = this.state.move.slice(0, this.state.step + 1);;
+        const winner = calculateWinner(currentBoard);
+    
+        const draw = calculateDraw(currentBoard);
+
+        const move = this.state.move.slice(0, this.state.step + 1);
         this.setState({
             history: hist.concat([{
                 squares: currentBoard
             }]),
             step: this.state.step + 1,
             move: move.concat([[Math.ceil((i + 1) / 3), (i + 1) % 3 ? (i + 1) % 3 : 3]]),
-            xIsNext: !this.state.xIsNext
+            xIsNext: !this.state.xIsNext,
+            winners: winner ? winner[1] : [],
+            draw: draw
         })
     }
 
@@ -94,10 +101,11 @@ class Game extends React.Component {
     render() {
         const hist = this.state.history;
         const currentBoard = hist[this.state.step].squares;
-        const winner = calculateWinner(currentBoard);
         let status;
-        if (winner) {
-            status = 'Winner: ' + winner[0];
+        if (this.state.winners.length != 0) {
+            status = 'Winner: ' + (this.state.xIsNext ? 'O' : 'X');
+        }else if(this.state.draw){
+            status = "Draw";
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
@@ -161,6 +169,15 @@ function calculateWinner(squares) {
         }
     }
     return null;
+}
+
+function calculateDraw(squares) {
+    for (let i = 0; i < 9; i++){
+        if(squares[i] == null){
+            return false;
+        }
+    }
+    return true;
 }
 
 ReactDOM.render(
